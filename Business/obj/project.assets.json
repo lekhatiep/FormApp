@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\TIEP_Learning\\Projects\\FormApp\\Business\\Business.csproj",
+      "projectUniqueName": "D:\\TIEP_Learning\\Projects\\FormApp\\Business\\Business.csproj",
       "projectName": "Business",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\TIEP_Learning\\Projects\\FormApp\\Business\\Business.csproj",
+      "projectPath": "D:\\TIEP_Learning\\Projects\\FormApp\\Business\\Business.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\TIEP_Learning\\Projects\\FormApp\\Business\\obj\\",
+      "outputPath": "D:\\TIEP_Learning\\Projects\\FormApp\\Business\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -694,8 +694,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Desktop\\TIEP_Learning\\Projects\\FormApp\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\TIEP_Learning\\Projects\\FormApp\\DataAccess\\DataAccess.csproj"
+            "D:\\TIEP_Learning\\Projects\\FormApp\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "D:\\TIEP_Learning\\Projects\\FormApp\\DataAccess\\DataAccess.csproj"
             }
           }
         }
