@@ -17,9 +17,22 @@ namespace Business.Services.UserService
         {
             this._dapperDbConnection = dapperDbConnection;
         }
-        public Task<Account> CheckAccountInfo()
+        public async Task<Account> CheckAccountInfo(string userName, string password)
         {
-            throw new NotImplementedException();
+            using (var connection = _dapperDbConnection.CreateConnection())
+            {
+                string sql = @"SELECT TOP 1 r.Name as RoleName, * FROM Account a INNER JOIN Role r on r.RoleID = a.RoleID  WHERE UserName = @userName AND Password = @password";
+                var account = await connection.QueryFirstOrDefaultAsync<Account>(sql, new { userName, password });
+
+                if(account != null)
+                {
+                    return account;                
+                }
+                else
+                {
+                    return new Account();
+                }
+            }
         }
 
         public async Task<IEnumerable<Account>> GetListAccount()

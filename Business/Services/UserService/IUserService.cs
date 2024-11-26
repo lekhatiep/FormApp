@@ -10,7 +10,7 @@ namespace Business.Services.UserService
     public interface IUserService
     {
         Task<IEnumerable<Account>> GetListAccount();
-        Task<Account> CheckAccountInfo();
+        Task<Account> CheckAccountInfo(string userName, string password);
         Task<IEnumerable<Account>> GetListStaffEmail();
         Task<Account> GetStudentEmail();
     }

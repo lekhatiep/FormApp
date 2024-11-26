@@ -1,8 +1,10 @@
 ﻿using Business.Services.UserService;
+using FormApp.Dtos.UserDto;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,6 +25,9 @@ namespace FormApp.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll()
         {
+            var l = new List<int> { 1, 2, 2, 3, 3, 4, };
+     
+
             var listAccount = await _userService.GetListAccount();
             return Ok(listAccount);
         }
@@ -57,6 +62,22 @@ namespace FormApp.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpPost("CheckAccountInfo")]
+        public async Task<ActionResult> CheckAccountInfo(CheckAccountDto checkAccountDto)
+        {
+            var account = await _userService.CheckAccountInfo(checkAccountDto.UserName, checkAccountDto.Password);
+            if (account.AccountID > 0)
+            {
+                return Ok(new
+                {
+                    message = "Login Successfully",
+                    role = account.RoleName
+                });
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
         }
     }
 }
