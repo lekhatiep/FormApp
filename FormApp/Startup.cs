@@ -1,3 +1,4 @@
+using Business.Services.FormService;
 using Business.Services.UserService;
 using DataAccess.DataContext;
 using DataAccess.Interfaces;
@@ -45,6 +46,7 @@ namespace FormApp
             services.AddSingleton<IDapperDbConnection, DapperDbConnectionFactory>();
 
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IFormService, FormService>();
 
 
             #endregion  Register Service

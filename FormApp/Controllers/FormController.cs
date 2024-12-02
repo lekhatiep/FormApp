@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Services.FormService;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,11 +14,25 @@ namespace FormApp.Controllers
     [ApiController]
     public class FormController : ControllerBase
     {
-        // GET: api/<FormController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IFormService _formService;
+        public FormController(IFormService formService)
         {
-            return new string[] { "value1", "value2" };
+            _formService = formService;
+        }
+        // GET: api/<FormController>
+        [HttpGet("getDynamicFormList")]
+        public async Task<ActionResult> GetDynamicFormList()
+        {
+            try
+            {
+                var data = await _formService.GetDynamicFormList();
+
+                return Ok(data);      
+            }
+            catch (Exception)
+            {
+                return BadRequest(HttpStatusCode.BadRequest);
+            }
         }
 
         // GET api/<FormController>/5
