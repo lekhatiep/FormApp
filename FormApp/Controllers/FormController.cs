@@ -1,4 +1,5 @@
-﻿using Business.Services.FormService;
+﻿using Business.Dto.FormDto;
+using Business.Services.FormService;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -43,9 +44,21 @@ namespace FormApp.Controllers
         }
 
         // POST api/<FormController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("createNewDynamicForm")]
+        public async Task<ActionResult> CreateNewDynamicForm([FromBody] FormDynamicDto formDynamic)
         {
+            try
+            {
+                var data = await _formService.CreateNewDynamicForm(formDynamic);
+
+                return Ok(new {
+                    message = "Successfully Created New Form",
+                });
+            }
+            catch (Exception)
+            {
+                return BadRequest(HttpStatusCode.BadRequest);
+            }
         }
 
         // PUT api/<FormController>/5
@@ -58,6 +71,39 @@ namespace FormApp.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpGet("getFormLinkList")]
+        public async Task<ActionResult> GetFormLinkList()
+        {
+            try
+            {
+                var data = await _formService.GetFormLinkList();
+
+                return Ok(data);
+            }
+            catch (Exception)
+            {
+                return BadRequest(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPost("createNewFormLink")]
+        public async Task<ActionResult> CreateNewFormLink([FromBody] FormLinkDto formLink)
+        {
+            try
+            {
+                var data = await _formService.CreateFormLink(formLink);
+
+                return Ok(new
+                {
+                    message = "Successfully Created New Form",
+                });
+            }
+            catch (Exception)
+            {
+                return BadRequest(HttpStatusCode.BadRequest);
+            }
         }
     }
 }
