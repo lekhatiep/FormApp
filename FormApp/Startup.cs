@@ -1,4 +1,5 @@
 using Business.Services.FormService;
+using Business.Services.TickerService;
 using Business.Services.UserService;
 using DataAccess.DataContext;
 using DataAccess.Interfaces;
@@ -47,6 +48,7 @@ namespace FormApp
 
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IFormService, FormService>();
+            services.AddSingleton<ITicketService, TicketService>();
 
 
             #endregion  Register Service

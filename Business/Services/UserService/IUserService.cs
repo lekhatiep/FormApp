@@ -11,7 +11,10 @@ namespace Business.Services.UserService
     {
         Task<IEnumerable<Account>> GetListAccount();
         Task<Account> CheckAccountInfo(string userName, string password);
-        Task<IEnumerable<Account>> GetListStaffEmail();
+        Task<List<Profile>> GetListStaffEmail(string roleName);
         Task<Account> GetStudentEmail();
+
+        Task<Profile> GetProfileByUserName(string userName, bool defaultIfEmpty = false);
+        Task<Profile> GetProfileByUserID(int userId);
     }
 }

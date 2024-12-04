@@ -44,9 +44,46 @@ namespace Business.Services.UserService
             }
         }
 
-        public Task<IEnumerable<Account>> GetListStaffEmail()
+        public async Task<List<Profile>> GetListStaffEmail(string roleName)
+        {
+            using (var connection = _dapperDbConnection.CreateConnection())
+            {
+                string sql = @"SELECT profileID, FirstName, LastName, Email FROM Account a INNER JOIN Role r ON r.RoleID = a.RoleID 
+                                INNER JOIN Profile p ON p.AccountID = A.AccountID
+                                WHERE R.Name = @roleName ";
+                var data = await connection.QueryAsync<Profile>(sql, new { roleName });
+
+                if (data != null)
+                {
+                    return data.ToList();
+                }
+                else
+                {
+                    return new List<Profile>();
+                }
+            }
+        }
+
+        public Task<Profile> GetProfileByUserID(int userId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Profile> GetProfileByUserName(string userName, bool defaultIfEmpty = false)
+        {
+            using (var connection = _dapperDbConnection.CreateConnection())
+            {
+                string sql = "SELECT * FROM Profile p INNER JOIN Account a ON a.AccountID = p.AccountID WHERE a.UserName = @userName ";
+                var user = await connection.QueryFirstOrDefaultAsync<Profile>(sql, new { userName } );
+
+                if (defaultIfEmpty)
+                {
+                    if (user == null)
+                        return new Profile();
+                }
+
+                return user;
+            }
         }
 
         public Task<Account> GetStudentEmail()

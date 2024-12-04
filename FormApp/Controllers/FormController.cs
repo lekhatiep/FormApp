@@ -68,9 +68,19 @@ namespace FormApp.Controllers
         }
 
         // DELETE api/<FormController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("DeleteDynamicFormById/{id}")]
+        public async Task<ActionResult> DeleteDynamicForm (int id)
         {
+            var rs = await _formService.DeleteDynamicForm(id);
+            if (rs > 0)
+            {
+                return Ok(new
+                {
+                    message = "Successfully",
+                });
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
         }
 
         [HttpGet("getFormLinkList")]
@@ -104,6 +114,53 @@ namespace FormApp.Controllers
             {
                 return BadRequest(HttpStatusCode.BadRequest);
             }
+        }
+
+        [HttpPut("UpdateDynamicForm")]
+        public async Task<ActionResult> UpdateDynamicForm([FromBody] UpdateDynamicFormDto updateDynamicFormDto)
+        {
+            var rs = await _formService.UpdateDynamicForm(updateDynamicFormDto);
+
+            if(rs > 0)
+            {
+                return Ok(new
+                {
+                    message = "Successfully Updated Form",
+                });
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
+        }
+
+        [HttpPut("UpdateFormLink")]
+        public async Task<ActionResult> UpdateFormLink([FromBody] UpdateFormLinkDto updateFormLinkDto)
+        {
+            var rs = await _formService.UpdateFormLink(updateFormLinkDto);
+
+            if (rs > 0)
+            {
+                return Ok(new
+                {
+                    message = "Successfully Updated Form",
+                });
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
+        }
+
+        [HttpDelete("DeleteFormLinkById/{id}")]
+        public async Task<ActionResult> DeleteFormLinkById(int id)
+        {
+            var rs = await _formService.DeleteDynamicFormLink(id);
+            if (rs > 0)
+            {
+                return Ok(new
+                {
+                    message = "Successfully",
+                });
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
         }
     }
 }
