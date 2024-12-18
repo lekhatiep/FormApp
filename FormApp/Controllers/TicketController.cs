@@ -15,11 +15,11 @@ namespace FormApp.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
-        private readonly ITicketService ticketService;
+        private readonly ITicketService _ticketService;
 
         public TicketController(ITicketService ticketService)
         {
-            this.ticketService = ticketService;
+            _ticketService = ticketService;
         }
         // GET: api/<TicketController>
         [HttpGet]
@@ -39,7 +39,7 @@ namespace FormApp.Controllers
         [HttpPost("postDynamicFormData")]
         public async Task<ActionResult> postDynamicFormData([FromBody] CreateTicketDto createTicketDto)
         {
-           var rs =  await ticketService.CreateNewTicket(createTicketDto);
+           var rs =  await _ticketService.CreateNewTicket(createTicketDto);
             if(rs > 0)
             {
                 return Ok();
@@ -59,5 +59,39 @@ namespace FormApp.Controllers
         public void Delete(int id)
         {
         }
+
+        [HttpGet("GetTicketInfo")]
+        public async Task<ActionResult> GetTicketInfo()
+        {
+            try
+            {
+                var rs = await _ticketService.GetListTicket();
+                return Ok(rs);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }        
+
+        }
+        [HttpGet("getDataByTicketID/{ID}")]
+        public async Task<ActionResult> getDataByTicketID(int ID)
+        {
+            try
+            {
+                var rs = await _ticketService.GetDataByTicketID(ID);
+                return Ok(rs);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }
+
+        }
+
     }
 }

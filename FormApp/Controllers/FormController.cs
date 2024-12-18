@@ -162,5 +162,22 @@ namespace FormApp.Controllers
 
             return BadRequest(HttpStatusCode.BadRequest);
         }
+
+        [HttpGet("GetDynamicFormByID/{id}")]
+        public async Task<ActionResult> GetRequstTicketID(int id)
+        {
+            try
+            {
+                var rs = await _formService.GetDynamicFormInputsByID(id,true);
+                return Ok(rs);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }
+
+        }
     }
 }

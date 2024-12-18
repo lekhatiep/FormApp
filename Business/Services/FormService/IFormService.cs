@@ -18,6 +18,7 @@ namespace Business.Services.FormService
         Task<int> DeleteDynamicFormLink(int formLinkID);
         Task<int> UpdateFormLink(UpdateFormLinkDto updateFormLinkDto);
         Task<FormTicketDto> GetDynamicFormInputsByID(int ticketID, bool defaultIfEmpty);
+        Task<FormTicketDto> GetFormRequestById(int ticketID);
     }
 }
 
