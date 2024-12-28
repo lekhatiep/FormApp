@@ -79,5 +79,17 @@ namespace FormApp.Controllers
 
             return BadRequest(HttpStatusCode.BadRequest);
         }
+
+        [HttpGet("GetStaffEmailList")]
+        public async Task<ActionResult> GetStaffEmailList(string staffRole)
+        {
+            var data = await _userService.GetListStaffEmail(staffRole);
+            if (data != null)
+            {
+                return Ok(data);
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace Business.Dtos.FormDto
+namespace Business.Dto.FormDto
 {
     public class FormDynamicDto
     {
