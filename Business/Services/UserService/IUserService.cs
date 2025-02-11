@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities;
+﻿using Business.Dto.UserDto;
+using DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,10 @@ namespace Business.Services.UserService
 
         Task<Profile> GetProfileByUserName(string userName, bool defaultIfEmpty = false);
         Task<Profile> GetProfileByUserID(int userId);
+        Task<Profile> GetProfileByEmail(string email, bool defaultIfEmpty = false);
+        Task SendMailNewPassword(string email, string apiKey, string privateKey);
+        Task CreateNewAccount(NewAccountDto newAccountDto);
+        Task<Account> GetAccountByID(int accountID, bool defaultIfEmpty = false);
+        Task UpdatePassword(int accountID, string newPassword);
     }
 }

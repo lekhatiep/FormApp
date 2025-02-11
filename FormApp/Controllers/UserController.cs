@@ -1,9 +1,12 @@
-﻿using Business.Services.UserService;
+﻿using Business.Dto.UserDto;
+using Business.Dtos.MailDto;
+using Business.Services.UserService;
+using Business.Ultilities;
 using FormApp.Dtos.UserDto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -16,10 +19,14 @@ namespace FormApp.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMailjetSend _mailjet;
+        private readonly IConfiguration _configuration;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMailjetSend mailjet, IConfiguration configuration)
         {
             _userService = userService;
+            _mailjet = mailjet;
+            _configuration = configuration;
         }
 
         [HttpGet("GetAll")]
@@ -90,6 +97,41 @@ namespace FormApp.Controllers
             }
 
             return BadRequest(HttpStatusCode.BadRequest);
+        }
+
+        [HttpPost("CreateNewAccount")]
+        public async Task<ActionResult> CreateNewAccount([FromBody] NewAccountDto newAccountDto)
+        {
+            try
+            {
+                await _userService.CreateNewAccount(newAccountDto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }
+        }
+
+        [HttpPost("SendNewPassword")]
+        public async Task<ActionResult> SendNewPassword(string email)
+        {
+            try
+            {
+                var apiKey = _configuration.GetValue<string>("Mailjet_API_KEY");
+                var apiPrivateKey = _configuration.GetValue<string>("Mailjet_PRIVATE_KEY");
+
+                await _userService.SendMailNewPassword(email, apiKey, apiPrivateKey);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }
+
         }
     }
 }

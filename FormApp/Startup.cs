@@ -1,21 +1,15 @@
 using Business.Services.FormService;
 using Business.Services.TickerService;
 using Business.Services.UserService;
+using Business.Ultilities;
 using DataAccess.DataContext;
 using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FormApp
 {
@@ -49,6 +43,7 @@ namespace FormApp
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IFormService, FormService>();
             services.AddSingleton<ITicketService, TicketService>();
+            services.AddSingleton<IMailjetSend, MailjetSend>();
 
 
             #endregion  Register Service
