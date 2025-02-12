@@ -101,14 +101,51 @@ namespace Business.Services.TickerService
             }
         }
 
-        public Task UpdateStatus()
+        public async Task<int> UpdateStatus(int ticketID)
         {
-            throw new NotImplementedException();
+            var rs = 1;
+            try
+            {          
+                using (var connection = _dapperDbConnection.CreateConnection())
+                {
+
+                    string sql = @"UPDATE RequestTicket SET Status = 'Done', 
+                                    DateApproved = @DateApprove
+                                    WHERE TicketID = @TicketID";
+                    await connection.ExecuteAsync(sql, new { DateApprove = DateTime.Now, TicketID = ticketID});
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                rs = 0;
+                throw;
+            }
+
+            return rs;
         }
 
-        public Task UpdateStepTicket()
+        public async Task<int> UpdateStepTicket(UpdateTicketDto ticketDto)
         {
-            throw new NotImplementedException();
+            var rs = 1;
+            try
+            {
+                using (var connection = _dapperDbConnection.CreateConnection())
+                {
+
+                    string sql = @"UPDATE RequestTicket SET ActiveStep = ActiveStep + 1 WHERE TicketID = @TicketID";
+                    await connection.ExecuteAsync(sql, new { TicketID = ticketDto.TicketID });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                rs = 0;
+                throw;
+            }
+
+            return rs;
         }
 
         public async Task<TicketDataDto> GetDataByTicketID(int ID, bool defaultEmpty = false)
@@ -138,6 +175,75 @@ namespace Business.Services.TickerService
             {
                 throw;
             }
+        }
+
+        public async Task<int> UpdatePreviousNote(UpdateTicketDto ticketDto)
+        {
+            var rs = 1;
+            try
+            {
+                using (var connection = _dapperDbConnection.CreateConnection())
+                {
+
+                    string sql = @"UPDATE RequestTicket SET Note = @Note WHERE TicketID = @TicketID";
+                    await connection.ExecuteAsync(sql, new { Note = ticketDto.Note, TicketID = ticketDto.TicketID });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                rs = 0;
+                throw;
+            }
+
+            return rs;
+        }
+
+        public async Task<int> DisapproveTicket(int ticketID)
+        {
+            var rs = 1;
+            try
+            {
+                using (var connection = _dapperDbConnection.CreateConnection())
+                {
+
+                    string sql = @"UPDATE RequestTicket SET Status = 'Update' WHERE TicketID = @TicketID";
+                    await connection.ExecuteAsync(sql, new { TicketID = ticketID });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                rs = 0;
+                throw;
+            }
+
+            return rs;
+        }
+
+        public async Task<int> UpdateTicketData(UpdateTicketDto ticketDto)
+        {
+            var rs = 1;
+            try
+            {
+                using (var connection = _dapperDbConnection.CreateConnection())
+                {
+
+                    string sql = @"UPDATE RequestTicket
+                                    SET TicketData = @TicketData,
+                                    Status = 'Waiting'
+                                    WHERE  TicketID = @TicketID";
+                    await connection.ExecuteAsync(sql, new { TicketData = ticketDto.TicketData, TicketID = ticketDto.TicketID });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                rs = 0;
+                throw;
+            }
+
+            return rs;
         }
     }
 }

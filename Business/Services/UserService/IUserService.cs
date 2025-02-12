@@ -22,5 +22,6 @@ namespace Business.Services.UserService
         Task CreateNewAccount(NewAccountDto newAccountDto);
         Task<Account> GetAccountByID(int accountID, bool defaultIfEmpty = false);
         Task UpdatePassword(int accountID, string newPassword);
+        Task<List<Role>> GetListRole();
     }
 }

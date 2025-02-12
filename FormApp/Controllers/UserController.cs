@@ -133,5 +133,29 @@ namespace FormApp.Controllers
             }
 
         }
+
+        [HttpGet("GetStudentEmail")]
+        public async Task<ActionResult> GetStudentEmail(string requestor)
+        {
+            var data = await _userService.GetProfileByUserName(requestor);
+            if (data != null)
+            {
+                return Ok(data);
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
+        }
+
+        [HttpGet("GetListRole")]
+        public async Task<ActionResult> GetListRole()
+        {
+            var data = await _userService.GetListRole();
+            if (data != null)
+            {
+                return Ok(data);
+            }
+
+            return BadRequest(HttpStatusCode.BadRequest);
+        }
     }
 }

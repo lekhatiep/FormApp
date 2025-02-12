@@ -12,5 +12,6 @@ namespace Business.Dto.FormDto
         public string FormData { get; set; }
         public string TicketData { get; set; }
         public int ActiveStep { get; set; }
+        public string FormFile { get; set; }
     }
 }

@@ -145,6 +145,13 @@ namespace Business.Services.UserService
 
         public async Task CreateNewAccount(NewAccountDto newAccountDto)
         {
+            var roleID = (int)Enum.Role.student;
+
+            if (newAccountDto.RoleID > 0)
+            {
+                roleID = newAccountDto.RoleID;
+            }
+
             using (var connection = _dapperDbConnection.CreateConnection())
             {
                 string sql = @"INSERT INTO [dbo].[Account]
@@ -159,7 +166,7 @@ namespace Business.Services.UserService
                 var accountID = await connection.QueryFirstOrDefaultAsync<int>(sql, new {
                     username = newAccountDto.UserName,
                     password = newAccountDto.Password,
-                    roleId = (int)Enum.Role.student // Student default     
+                    roleId = roleID // Student default     
                 });
                 
                 if(accountID > 0)
@@ -210,6 +217,24 @@ namespace Business.Services.UserService
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        public async Task<List<Role>> GetListRole()
+        {
+            using (var connection = _dapperDbConnection.CreateConnection())
+            {
+                string sql = @"SELECT * FROM ROLE ";
+                var data = await connection.QueryAsync<Role>(sql);
+
+                if (data != null)
+                {
+                    return data.ToList();
+                }
+                else
+                {
+                    return new List<Role>();
+                }
             }
         }
     }

@@ -93,5 +93,38 @@ namespace FormApp.Controllers
 
         }
 
+        [HttpPost("UpdatePreviousNote")]
+        public async Task<ActionResult> UpdatePreviousNote([FromBody] UpdateTicketDto ticketDto)
+        {
+            try
+            {
+                var rs = await _ticketService.UpdatePreviousNote(ticketDto);
+                return Ok(rs);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }
+
+        }
+
+        [HttpPost("UpdateStepTicket")]
+        public async Task<ActionResult> UpdateStepTicket([FromBody] UpdateTicketDto ticketDto)
+        {
+            try
+            {
+                var rs = await _ticketService.UpdateStepTicket(ticketDto);
+                return Ok(rs);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(HttpStatusCode.BadRequest);
+                throw;
+            }
+
+        }
     }
 }

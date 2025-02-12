@@ -280,7 +280,7 @@ namespace Business.Services.FormService
         {
             using (var connection = _dapperDbConnection.CreateConnection())
             {
-                string sql = @"SELECT FormName, FormData,TicketData, ActiveStep 
+                string sql = @"SELECT FormName, FormData,TicketData, ActiveStep , FormFile 
                                 FROM DynamicForm  df
                                 INNER JOIN RequestTicket rt ON
                                 df.FormID = rt.FormID 

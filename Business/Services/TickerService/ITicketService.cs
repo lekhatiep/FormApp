@@ -10,7 +10,10 @@ namespace Business.Services.TickerService
         Task<List<TicketDto>> GetListTicket();
         Task<List<TicketDto>> GetListTicketByUserName(string userName);
         Task<TicketDataDto> GetDataByTicketID(int ID, bool defaultEmpty = false);
-        Task UpdateStepTicket();
-        Task UpdateStatus();
+        Task<int> UpdateStepTicket(UpdateTicketDto ticketDto);
+        Task<int> UpdateStatus(int ticketID);
+        Task<int> UpdatePreviousNote(UpdateTicketDto ticketDto);
+        Task<int> DisapproveTicket(int ticketID);
+        Task<int> UpdateTicketData(UpdateTicketDto ticketDto);
     }
 }
