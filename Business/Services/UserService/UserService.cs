@@ -112,7 +112,7 @@ namespace Business.Services.UserService
         {
             using (var connection = _dapperDbConnection.CreateConnection())
             {
-                string sql = "SELECT TOP 1 FROM Profile p  WHERE p.Email = @email ";
+                string sql = "SELECT TOP 1 * FROM Profile p  WHERE p.Email = @email ";
                 var user = await connection.QueryFirstOrDefaultAsync<Profile>(sql, new { email });
 
                 if (defaultIfEmpty)
@@ -126,7 +126,7 @@ namespace Business.Services.UserService
         }
         public async Task SendMailNewPassword(string email, string apiKey, string privateKey)
         {
-            var profile = await GetProfileByEmail(email);
+            var profile = await GetProfileByEmail(email, true);
 
             if(profile.AccountID > 0)
             {
@@ -135,11 +135,12 @@ namespace Business.Services.UserService
                 {
                     FromName = "Admin Form App",
                     FromEmail = "popcap112024@gmail.com",
-                    Recipient = "popcap10121@gmail.com",
-                    BodyHtml = $"Mat khau moi la: <h2>123456</h2>"
+                    Recipient = email,
+                    BodyHtml = $"NEW PASSWORD: <h2>123456</h2>",
+                    Subject = "[FORMAPP] NEW PASSWORD "
                 };
 
-                await _mailjet.SendAsync(mailDto);
+                await _mailjet.SendAsync(mailDto, apiKey, privateKey);
             }
         }
 

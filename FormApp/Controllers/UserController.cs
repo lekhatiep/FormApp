@@ -3,6 +3,8 @@ using Business.Dtos.MailDto;
 using Business.Services.UserService;
 using Business.Ultilities;
 using FormApp.Dtos.UserDto;
+using FormApp.Services.AuthService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -21,12 +23,14 @@ namespace FormApp.Controllers
         private readonly IUserService _userService;
         private readonly IMailjetSend _mailjet;
         private readonly IConfiguration _configuration;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserService userService, IMailjetSend mailjet, IConfiguration configuration)
+        public UserController(IUserService userService, IMailjetSend mailjet, IConfiguration configuration, IAuthService authService)
         {
             _userService = userService;
             _mailjet = mailjet;
             _configuration = configuration;
+            _authService = authService;
         }
 
         [HttpGet("GetAll")]
@@ -77,16 +81,20 @@ namespace FormApp.Controllers
             var account = await _userService.CheckAccountInfo(checkAccountDto.UserName, checkAccountDto.Password);
             if (account.AccountID > 0)
             {
+                var auhRes = _authService.GenerateToken(account.UserName, "");
                 return Ok(new
                 {
                     message = "Login Successfully",
-                    role = account.RoleName
+                    role = account.RoleName,
+                    token = auhRes.Token,
+                    totalSeconds = auhRes.TotalSecond
                 });
             }
 
             return BadRequest(HttpStatusCode.BadRequest);
         }
 
+        [Authorize]
         [HttpGet("GetStaffEmailList")]
         public async Task<ActionResult> GetStaffEmailList(string staffRole)
         {
@@ -134,6 +142,7 @@ namespace FormApp.Controllers
 
         }
 
+ 
         [HttpGet("GetStudentEmail")]
         public async Task<ActionResult> GetStudentEmail(string requestor)
         {
