@@ -97,6 +97,7 @@ namespace FormApp
             services.AddSingleton<ITicketService, TicketService>();
             services.AddSingleton<IMailjetSend, MailjetSend>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<ISendMail, SendMail>();
 
 
             #endregion  Register Service
