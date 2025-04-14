@@ -16,11 +16,13 @@ namespace Business.Services.UserService
     {
         private readonly IDapperDbConnection _dapperDbConnection;
         private readonly IMailjetSend _mailjet;
+        private readonly ISendMail _sendMail;
 
-        public UserService(IDapperDbConnection dapperDbConnection, IMailjetSend mailjet)
+        public UserService(IDapperDbConnection dapperDbConnection, IMailjetSend mailjet, ISendMail sendMail)
         {
             this._dapperDbConnection = dapperDbConnection;
             _mailjet = mailjet;
+            _sendMail = sendMail;
         }
         public async Task<Account> CheckAccountInfo(string userName, string password)
         {
@@ -124,23 +126,79 @@ namespace Business.Services.UserService
                 return user;
             }
         }
-        public async Task SendMailNewPassword(string email, string apiKey, string privateKey)
+        public async Task SendMailNewPassword(string email, string apiKey, string privateKey, string user, string pw)
         {
             var profile = await GetProfileByEmail(email, true);
 
             if(profile.AccountID > 0)
             {
                 await UpdatePassword(profile.AccountID, "123456");
-                var mailDto = new MailDto()
+                try
+                {
+                    string htmlBody = String.Format(@"
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset='UTF-8'>
+                            <title>Mật khẩu mới</title>
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    color: #333;
+                                    background-color: #f5f5f5;
+                                    padding: 20px;
+                                }}
+                                .email-container {{
+                                    background-color: #ffffff;
+                                    border-radius: 6px;
+                                    padding: 30px;
+                                    max-width: 600px;
+                                    margin: auto;
+                                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                                }}
+                                .footer {{
+                                    margin-top: 20px;
+                                    font-size: 13px;
+                                    color: #999;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <div class='email-container'>
+                                <h2>Chào {0} {1},</h2>
+                                <p>Đây là mật khẩu mới được cấp cho bạn:</p>
+                                <p><strong style='font-size: 18px;'>123456</strong></p>
+                                <p>Nếu bạn không yêu cầu thay đổi mật khẩu, vui lòng liên hệ quản trị viên.</p>
+                                <p>Trân trọng,<br>Admin Form App</p>
+                                <div class='footer'>
+                                    Email này được gửi tự động, vui lòng không trả lời lại.
+                                </div>
+                            </div>
+                        </body>
+                        </html>
+                    ", profile.FirstName, profile.LastName);
+
+
+
+
+                    var mailDto = new MailDto()
                 {
                     FromName = "Admin Form App",
-                    FromEmail = "popcap112024@gmail.com",
+                    NameRecipient = profile.FirstName + " " + profile.LastName,
                     Recipient = email,
-                    BodyHtml = $"NEW PASSWORD: <h2>123456</h2>",
-                    Subject = "[FORMAPP] NEW PASSWORD "
+                    //BodyHtml = $@"NEW PASSWORD: <h2>123456</h2>",
+                    BodyHtml = htmlBody,
+                    Subject = "[FORM_APP] Mật khẩu mới được cấp "
                 };
 
-                await _mailjet.SendAsync(mailDto, apiKey, privateKey);
+                //await _mailjet.SendAsync(mailDto, apiKey, privateKey);
+                await _sendMail.GmailSendAsync(mailDto, user, pw);
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
             }
         }
 

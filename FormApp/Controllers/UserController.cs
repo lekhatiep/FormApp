@@ -130,8 +130,12 @@ namespace FormApp.Controllers
             {
                 var apiKey = _configuration.GetValue<string>("Mailjet_API_KEY");
                 var apiPrivateKey = _configuration.GetValue<string>("Mailjet_PRIVATE_KEY");
+                var gmailUser = _configuration.GetValue<string>("Gmail_APP_USER");
+                var gmailApppw = _configuration.GetValue<string>("Gmail_APP_PW");
 
-                await _userService.SendMailNewPassword(email, apiKey, apiPrivateKey);
+                await _userService.SendMailNewPassword(email, apiKey, apiPrivateKey, gmailUser , gmailApppw);
+
+
                 return Ok();
             }
             catch (Exception e)
