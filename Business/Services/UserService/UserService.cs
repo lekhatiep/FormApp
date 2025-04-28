@@ -196,7 +196,7 @@ namespace Business.Services.UserService
                 }
                 catch (Exception ex)
                 {
-
+                    LogHelper.WriteLog($"Error sending email: {ex.Message}");
                     throw;
                 }
             }

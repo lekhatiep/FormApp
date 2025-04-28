@@ -13,7 +13,8 @@ namespace Business.Services.TickerService
         Task<int> UpdateStepTicket(UpdateTicketDto ticketDto);
         Task<int> UpdateStatus(int ticketID);
         Task<int> UpdatePreviousNote(UpdateTicketDto ticketDto);
-        Task<int> DisapproveTicket(int ticketID);
+        Task<int> DisapproveTicket(UpdateTicketDto ticketDto);
         Task<int> UpdateTicketData(UpdateTicketDto ticketDto);
+        Task<List<TicketDto>> GetListTicketByRole(string roleName);
     }
 }

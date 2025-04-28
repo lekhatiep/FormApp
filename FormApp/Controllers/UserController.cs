@@ -138,8 +138,9 @@ namespace FormApp.Controllers
 
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                LogHelper.WriteLog($"Error sending email: {ex.Message}");
                 return BadRequest(HttpStatusCode.BadRequest);
                 throw;
             }
