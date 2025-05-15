@@ -22,6 +22,11 @@ namespace Business.Dto.TicketDto
         [JsonPropertyName("status_id")]
         public int StatusID { get; set; }
 
-      
+        [JsonPropertyName("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonPropertyName("lastName")]
+        public string LastName { get; set; }
+
     }
 }

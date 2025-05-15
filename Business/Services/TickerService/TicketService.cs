@@ -155,7 +155,7 @@ namespace Business.Services.TickerService
                 using (var connection = _dapperDbConnection.CreateConnection())
                 {
 
-                    string sql = @"SELECT TicketData, Note, Username, Status, ActiveStep, Email, a.*
+                    string sql = @"SELECT TicketData, Note, Username, Status, ActiveStep, Email, FirstName, LastName, a.*
                                     FROM RequestTicket rt 
                                     JOIN Profile p ON p.ProfileID = rt.ProfileID 
                                     JOIN Account a ON a.AccountID = p.AccountID  
